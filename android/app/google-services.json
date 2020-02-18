@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "321302031012",
+    "firebase_url": "https://kompra-94a74.firebaseio.com",
+    "project_id": "kompra-94a74",
+    "storage_bucket": "kompra-94a74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321302031012:android:43d45ba838420ef72a1431",
+        "android_client_info": {
+          "package_name": "com.npptoo.kompra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321302031012-7s07e5p6ms2k5j7lfodm4g0e76fvl88j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDROWrSyfogn8RiHmyzplBuFrhslyjM5Ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321302031012-7s07e5p6ms2k5j7lfodm4g0e76fvl88j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
