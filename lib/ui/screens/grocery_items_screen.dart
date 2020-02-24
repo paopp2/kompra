@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:kompra/constants.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
 
 class GroceryItemsScreen extends StatelessWidget {
   static String id = 'grocery_items_screen_id';
@@ -33,7 +34,7 @@ class GroceryItemsScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  //TODO: Open grocery cart
+                  Navigator.pushNamed(context, GroceryListFormScreen.id);
                 },
               ),
             ],
@@ -47,15 +48,15 @@ class GroceryItemsScreen extends StatelessWidget {
               ),
               CategoryTile(
                 image: AssetImage('images/category_background_images/beverages.jpg'),
-                categoryTitle: 'Juices and softdrinks',
+                categoryTitle: 'Juices and Softdrinks',
               ),
               CategoryTile(
                 image: AssetImage('images/category_background_images/snacks.jpg'),
-                categoryTitle: 'Snacks and sweets',
+                categoryTitle: 'Snacks and Sweets',
               ),
               CategoryTile(
                 image: AssetImage('images/category_background_images/school_and_office_supplies.jpg'),
-                categoryTitle: 'School and office supplies',
+                categoryTitle: 'School and Office Supplies',
               ),
             ],
           ),
