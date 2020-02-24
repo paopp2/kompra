@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kompra/constants.dart';
 
 class ShopperAcceptedScreen extends StatefulWidget {
-  static String id = 'mechanic_accepted_screen';
+  static const String id = 'mechanic_accepted_screen';
   @override
   _ShopperAcceptedScreenState createState() => _ShopperAcceptedScreenState();
 }

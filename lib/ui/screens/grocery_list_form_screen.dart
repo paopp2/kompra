@@ -9,7 +9,7 @@ import 'package:kompra/constants.dart';
 import 'package:kompra/ui/components/found_shopper_alert.dart';
 import 'package:kompra/ui/providers/providers.dart';
 import 'package:kompra/ui/screens/finding_shopper_screen.dart';
-import 'package:kompra/ui/screens/home_screen.dart';
+import 'package:kompra/ui/screens/location_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -79,7 +79,7 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
           tempProgress = 5/5;
           Provider.of<PendingTransaction>(context, listen: false).transaction.phase = my.TransactionPhase.coming;
           sub.cancel();
-          Navigator.popUntil(context, ModalRoute.withName(HomeScreen.id));
+          Navigator.popUntil(context, ModalRoute.withName(LocationScreen.id));
         }
       }
       setState(() {

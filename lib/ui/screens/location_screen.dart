@@ -17,13 +17,13 @@ import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
 import 'package:kompra/domain/distance_and_travel_time.dart';
 import 'package:kompra/domain/separable_home_screen_functions.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const id = 'home_screen';
+class LocationScreen extends StatefulWidget {
+  static String id = 'location_screen_id';
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _LocationScreenState createState() => _LocationScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _LocationScreenState extends State<LocationScreen> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Completer<GoogleMapController> _controller = Completer();
   List<PlacesSearchResult> nearbyPlaces = [];

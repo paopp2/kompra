@@ -3,7 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kompra/constants.dart';
 
 class LoadingScreen extends StatelessWidget {
-  static String id = 'loading_screen';
+  static const String id = 'loading_screen';
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kompra/constants.dart';
 
 class ScratchScreen extends StatefulWidget {
-  static const id = 'scratch_screen';
+  static String id = 'scratch_screen';
 
   @override
   _ScratchScreenState createState() => _ScratchScreenState();

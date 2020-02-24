@@ -9,7 +9,7 @@ import 'package:kompra/ui/components/floating_action_buttons.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:kompra/ui/providers/providers.dart';
 import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
-import 'package:kompra/ui/screens/home_screen.dart';
+import 'package:kompra/ui/screens/location_screen.dart';
 import 'package:provider/provider.dart';
 
 class FindingShopperScreen extends StatefulWidget {
@@ -75,7 +75,7 @@ class _FindingShopperScreenState extends State<FindingShopperScreen> {
           floatingActionButton: DefaultExtendedFAB(
             onPressed: () {
               sub.cancel();
-              Navigator.popUntil(context, ModalRoute.withName(HomeScreen.id));
+              Navigator.popUntil(context, ModalRoute.withName(LocationScreen.id));
               FirebaseTasks.deleteDocument(docID);
             },
             label: 'Cancel',
