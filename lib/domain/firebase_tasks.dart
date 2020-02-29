@@ -102,11 +102,22 @@ class FirebaseTasks {
     return stream;
   }
 
+  //FOR GROCERY ITEMS
   static Stream<QuerySnapshot> getAlcoholicDrinksStream({String subtype}) {
     Stream<QuerySnapshot> stream;
     switch(subtype) {
       case null: {
         stream = alcoholicDrinksDocument.collection('common').orderBy('itemName').snapshots();
+      } break;
+    }
+    return stream;
+  }
+
+  static Stream<QuerySnapshot> getSnacksStream({String subtype}) {
+    Stream<QuerySnapshot> stream;
+    switch(subtype) {
+      case null: {
+        stream = snacksDocument.collection('top').orderBy('itemName').snapshots();
       } break;
     }
     return stream;

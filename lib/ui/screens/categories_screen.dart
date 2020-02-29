@@ -11,7 +11,7 @@ import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
 import 'package:kompra/domain/location.dart' as location;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:kompra/ui/screens/map_screen.dart';
+import 'package:kompra/ui/screens/location_chooser_screen.dart';
 import 'package:kompra/ui/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -148,7 +148,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       ),
                       onTap: () {
                         if(Provider.of<PendingTransaction>(context, listen: false).transaction.location != null)
-                          Navigator.pushNamed(context, MapScreen.id);
+                          Navigator.pushNamed(context, LocationChooserScreen.id);
                       },
                     ),
                   ),

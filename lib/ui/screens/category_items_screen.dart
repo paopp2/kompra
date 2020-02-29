@@ -32,7 +32,7 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
         //
       } break;
       case CategoryType.snacks: {
-        //
+        chosenCategoryStream = FirebaseTasks.getSnacksStream();
       } break;
       case CategoryType.schoolOfficeSupplies: {
         //

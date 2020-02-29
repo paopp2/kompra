@@ -12,7 +12,7 @@ import 'package:kompra/ui/components/found_shopper_alert.dart';
 import 'package:kompra/ui/providers/providers.dart';
 import 'package:kompra/ui/screens/delivering_screen.dart';
 import 'package:kompra/ui/screens/finding_shopper_screen.dart';
-import 'package:kompra/ui/screens/map_screen.dart';
+import 'package:kompra/ui/screens/location_chooser_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -163,7 +163,7 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
                         'Edit',
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, MapScreen.id);
+                        Navigator.pushNamed(context, LocationChooserScreen.id);
                       },
                     ),
                   ],

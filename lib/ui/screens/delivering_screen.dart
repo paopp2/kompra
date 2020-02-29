@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kompra/domain/distance_and_travel_time.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:kompra/domain/models/transaction.dart';
-import 'package:kompra/domain/separable_map_screen_functions.dart';
+import 'package:kompra/domain/delivering_screen_functions.dart';
 import 'package:kompra/ui/components/rounded_button.dart';
 import 'package:kompra/ui/providers/providers.dart';
 import 'package:provider/provider.dart';
@@ -44,18 +44,6 @@ class _DeliveringScreenState extends State<DeliveringScreen> {
     clientLocation = LatLng(tempGeoPoint.latitude, tempGeoPoint.longitude);
   }
 
-  Marker createMarker({fstore.DocumentSnapshot doc, BitmapDescriptor markerIcon, fstore.GeoPoint geoPoint}) {
-    var markerIdVal = 'shopper_${doc.data['shopperName']}';
-    var markerId = MarkerId(markerIdVal);
-    Marker marker = Marker(
-      markerId: markerId,
-      position: LatLng(geoPoint.latitude, geoPoint.longitude),
-      infoWindow: InfoWindow(title: markerIdVal, snippet: '*'),
-      icon: markerIcon,
-    );
-    return marker;
-  }
-
   Future zoomToTwoMarkers(Map<MarkerId, Marker> markers) async {
     final GoogleMapController controller = await _controller.future;
     List<LatLng> tempList = [];
@@ -65,27 +53,6 @@ class _DeliveringScreenState extends State<DeliveringScreen> {
       tempList.add(LatLng(tempLat, tempLng));
     });
     controller.animateCamera(CameraUpdate.newLatLngBounds(boundsFromLatLngList(tempList), 100));
-//    setState(() {
-//      print('Total bullshit something: ${markers.length}');
-//      isZoomedAlready = true;
-//    });
-  }
-
-  LatLngBounds boundsFromLatLngList(List<LatLng> list) {
-    assert(list.isNotEmpty);
-    double x0, x1, y0, y1;
-    for (LatLng latLng in list) {
-      if (x0 == null) {
-        x0 = x1 = latLng.latitude;
-        y0 = y1 = latLng.longitude;
-      } else {
-        if (latLng.latitude > x1) x1 = latLng.latitude;
-        if (latLng.latitude < x0) x0 = latLng.latitude;
-        if (latLng.longitude > y1) y1 = latLng.longitude;
-        if (latLng.longitude < y0) y0 = latLng.longitude;
-      }
-    }
-    return LatLngBounds(northeast: LatLng(x1, y1), southwest: LatLng(x0, y0));
   }
 
   @override
@@ -119,7 +86,6 @@ class _DeliveringScreenState extends State<DeliveringScreen> {
             markerIcon: markerIcon
         );
         markers[myShopperLocationMarker.markerId] = myShopperLocationMarker;
-//            if(!isZoomedAlready && shoppersStreamSubscription.isPaused)
         zoomToTwoMarkers(markers);
       });
     });
@@ -143,7 +109,7 @@ class _DeliveringScreenState extends State<DeliveringScreen> {
                     target: clientLocation,
                     zoom: 15,
                   ),
-                  markers: (markers != null) ? Set<Marker>.of(markers.values) : null,
+                  markers: Set<Marker>.of(markers.values),
                 ),
                 Positioned(
                   bottom: 0,

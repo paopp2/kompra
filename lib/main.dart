@@ -9,7 +9,7 @@ import 'package:kompra/ui/screens/scratch.dart';
 import 'package:kompra/ui/screens/specific_item_screen.dart';
 import 'constants.dart';
 import 'package:kompra/ui/screens/finding_shopper_screen.dart';
-import 'package:kompra/ui/screens/map_screen.dart';
+import 'package:kompra/ui/screens/location_chooser_screen.dart';
 import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
 import 'package:kompra/ui/screens/loading_screen.dart';
 import 'package:kompra/ui/screens/login_screen.dart';
@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: initialRoute,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
-        MapScreen.id: (context) => MapScreen(),
+        LocationChooserScreen.id: (context) => LocationChooserScreen(),
         FindingShopperScreen.id: (context) => FindingShopperScreen(),
         SignUpScreen.id: (context) => SignUpScreen(),
         LoginScreen.id: (context) => LoginScreen(),

@@ -12,3 +12,4 @@ final CollectionReference shoppersCollection = fireStore.collection('shoppers');
 
 //GROCERY ITEMS
 final DocumentReference alcoholicDrinksDocument = fireStore.collection('grocery_items').document('alcoholic');
+final DocumentReference snacksDocument = fireStore.collection('grocery_items').document('snacks');
