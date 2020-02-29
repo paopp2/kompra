@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kompra/domain/models/client.dart';
+import 'package:kompra/domain/models/grocery_cart.dart';
 import 'package:kompra/domain/models/transaction.dart';
+import 'package:kompra/domain/models/category.dart';
+import 'package:kompra/domain/models/item.dart';
 
 class CurrentUser extends ChangeNotifier {
   CurrentUser({
@@ -15,5 +19,71 @@ class PendingTransaction extends ChangeNotifier {
     this.transaction,
   });
   Transaction transaction;
+  Marker clientLocationMarker;
+
+  void saveClientMarker(Marker m) {
+    clientLocationMarker = m;
+  }
+
+  void resetTransaction(Transaction lastTransaction) {
+    if(transaction.location != null && transaction.locationName != null){
+      transaction = Transaction(
+        locationName: lastTransaction.locationName,
+        location: lastTransaction.location,
+        phase: TransactionPhase.idle,
+      );
+    }
+  }
+  notifyListeners();
+}
+
+class ChosenCategory extends ChangeNotifier {
+  ChosenCategory({
+    this.category,
+  });
+  Category category;
+  notifyListeners();
+}
+
+class ChosenItem extends ChangeNotifier {
+  ChosenItem({
+    this.item
+  });
+  Item item;
+  notifyListeners();
+}
+
+class MyGroceryCart extends ChangeNotifier {
+//  MyGroceryCart({
+//    this.cart,
+//  });
+//  GroceryCart cart;
+
+  List<Item> itemList = [];
+  int totalNum = 0;
+  double totalPrice = 0.00;
+
+  void addItem(Item item) {
+    itemList.add(item);
+    totalNum+=(item.quantity);
+    totalPrice+=(item.itemPrice * item.quantity);
+  }
+
+  void resetGroceryCart() {
+    for(var item in itemList) {
+      item.quantity = 0;
+    }
+    itemList = [];
+    totalNum = 0;
+    totalPrice = 0.00;
+  }
+
+//  void incrementToTotalNum(int increment) {
+//    totalNum+=increment;
+//  }
+//
+//  void addToTotalPrice(double subtotal) {
+//    totalPrice+=subtotal;
+//  }
   notifyListeners();
 }

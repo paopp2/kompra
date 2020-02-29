@@ -5,14 +5,16 @@ class RoundedButton extends StatelessWidget {
   const RoundedButton({
     @required this.colour,
     @required this.onPressed,
-    @required this.text,
-    this.border = defaultRoundButtonBorder,
+    @required this.child,
+    this.border = kDefaultRoundButtonBorder,
+    this.isDisabled = false,
   });
 
   final Color colour;
   final Function onPressed;
-  final Text text;
+  final Widget child;
   final Border border;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +28,19 @@ class RoundedButton extends StatelessWidget {
           horizontal: 50,
         ),
         child: Material(
-          elevation: 0,
-          color: colour,
+          elevation: (isDisabled) ? 0 : 4,
+          color: (isDisabled) ? Colors.grey : colour,
           borderRadius: BorderRadius.circular(30.0),
           child: Container(
             decoration: BoxDecoration(
-              border: border,
+              border: isDisabled ? null : border,
               borderRadius: BorderRadius.circular(30.0),
             ),
             child: MaterialButton(
               onPressed: onPressed,
               minWidth: 200.0,
               height: 50,
-              child: text,
+              child: child,
             ),
           ),
         ),

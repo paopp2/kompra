@@ -28,14 +28,14 @@ class WelcomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   RoundedButton(
-                    text: kSignUpText,
+                    child: kSignUpText,
                     onPressed: () {
                       Navigator.pushNamed(context, SignUpScreen.id);
                     },
                     colour: kAccentColor,
                   ),
                   RoundedButton(
-                    text: kLoginText,
+                    child: kLoginText,
                     onPressed: () {
                       Navigator.pushNamed(context, LoginScreen.id);
                     },

@@ -2,11 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kompra/data/firebase_backend_connections.dart';
 import 'package:kompra/ui/providers/providers.dart';
-import 'package:kompra/ui/screens/grocery_items_screen.dart';
+import 'package:kompra/ui/screens/categories_screen.dart';
+import 'package:kompra/ui/screens/category_items_screen.dart';
+import 'package:kompra/ui/screens/delivering_screen.dart';
 import 'package:kompra/ui/screens/scratch.dart';
+import 'package:kompra/ui/screens/specific_item_screen.dart';
 import 'constants.dart';
 import 'package:kompra/ui/screens/finding_shopper_screen.dart';
-import 'package:kompra/ui/screens/location_screen.dart';
+import 'package:kompra/ui/screens/map_screen.dart';
 import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
 import 'package:kompra/ui/screens/loading_screen.dart';
 import 'package:kompra/ui/screens/login_screen.dart';
@@ -23,6 +26,9 @@ void main() async {
     providers: [
       ChangeNotifierProvider<CurrentUser>(create: (context) => CurrentUser(),),
       ChangeNotifierProvider<PendingTransaction>(create: (context) => PendingTransaction(),),
+      ChangeNotifierProvider<ChosenCategory>(create: (context) => ChosenCategory(),),
+      ChangeNotifierProvider<ChosenItem>(create: (context) => ChosenItem(),),
+      ChangeNotifierProvider<MyGroceryCart>(create: (context) => MyGroceryCart(),),
     ],
     child: MyApp(),
   ));
@@ -53,7 +59,7 @@ class _MyAppState extends State<MyApp> {
             initialRoute = WelcomeScreen.id;
           } else {
             //signed in
-            initialRoute = LocationScreen.id;
+            initialRoute = CategoriesScreen.id;
             FirebaseTasks.getClient(email: firebaseUser.email).then((client) {
               Provider.of<CurrentUser>(context, listen: false).client = client;
               print('Current user: ${Provider.of<CurrentUser>(context, listen: false).client.clientEmail}');
@@ -68,22 +74,22 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-//    checkIfLocationEnabled();
+    checkIfLocationEnabled();
   }
 
   @override
   Widget build(BuildContext context) {
     getInitialRoute();
-//    return (initialRoute == null) ? LoadingScreen() : MaterialApp(
-    return MaterialApp(
+    return (initialRoute == null) ? LoadingScreen() : MaterialApp(
+//    return MaterialApp(
       title: 'Kompra',
       theme: ThemeData(
         primaryColor: kPrimaryColor,
       ),
-      initialRoute: GroceryItemsScreen.id,
+      initialRoute: initialRoute,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
-        LocationScreen.id: (context) => LocationScreen(),
+        MapScreen.id: (context) => MapScreen(),
         FindingShopperScreen.id: (context) => FindingShopperScreen(),
         SignUpScreen.id: (context) => SignUpScreen(),
         LoginScreen.id: (context) => LoginScreen(),
@@ -91,7 +97,10 @@ class _MyAppState extends State<MyApp> {
         GroceryListFormScreen.id: (context) => GroceryListFormScreen(),
         LoadingScreen.id: (context) => LoadingScreen(),
         ScratchScreen.id: (context) => ScratchScreen(),
-        GroceryItemsScreen.id : (context) => GroceryItemsScreen(),
+        CategoriesScreen.id : (context) => CategoriesScreen(),
+        CategoryItemsScreen.id : (context) => CategoryItemsScreen(),
+        SpecificItemScreen.id : (context) => SpecificItemScreen(),
+        DeliveringScreen.id : (context) => DeliveringScreen(),
       },
     );
   }

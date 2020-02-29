@@ -8,12 +8,12 @@ import 'package:kompra/domain/models/transaction.dart' as my;
 import 'package:kompra/ui/components/floating_action_buttons.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:kompra/ui/providers/providers.dart';
+import 'package:kompra/ui/screens/categories_screen.dart';
 import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
-import 'package:kompra/ui/screens/location_screen.dart';
 import 'package:provider/provider.dart';
 
 class FindingShopperScreen extends StatefulWidget {
-  static String id = 'finding_mechanic_screen';
+  static String id = 'finding_mechanic_screen_id';
 
   @override
   _FindingShopperScreenState createState() => _FindingShopperScreenState();
@@ -35,6 +35,7 @@ class _FindingShopperScreenState extends State<FindingShopperScreen> {
     ).then((docRef) {
       setState(() {
         docID = docRef.documentID;
+        print('Doc ID: $docID');
         Provider.of<PendingTransaction>(context, listen: false).transaction.docID = docID;
       });
     });
@@ -62,7 +63,7 @@ class _FindingShopperScreenState extends State<FindingShopperScreen> {
                         shopperPhoneNum: snapshot.data['shopperPhoneNum'],
                         shopperImageUrl: snapshot.data['shopperImageUrl'],
                       );
-                  Navigator.pushNamed(context, GroceryListFormScreen.id);
+                  Navigator.pushReplacementNamed(context, GroceryListFormScreen.id);
                   sub.cancel();
                 }
               },
@@ -75,7 +76,7 @@ class _FindingShopperScreenState extends State<FindingShopperScreen> {
           floatingActionButton: DefaultExtendedFAB(
             onPressed: () {
               sub.cancel();
-              Navigator.popUntil(context, ModalRoute.withName(LocationScreen.id));
+              Navigator.popUntil(context, ModalRoute.withName(CategoriesScreen.id));
               FirebaseTasks.deleteDocument(docID);
             },
             label: 'Cancel',

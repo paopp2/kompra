@@ -80,14 +80,14 @@ Iterable<Widget> getWidgetsWhenIdle({
           ),
         ),
       ),
-      Positioned(
-        bottom: 15,
-        left: 15,
-        right: 15,
-        child: MakeAListButton(
-          onPressed: onMakeAListButtonTapped,
-        ),
-      ),
+//      Positioned(
+//        bottom: 15,
+//        left: 15,
+//        right: 15,
+//        child: MakeAListButton(
+//          onPressed: onMakeAListButtonTapped,
+//        ),
+//      ),
     ];
   }
 
@@ -150,7 +150,7 @@ Widget getWidgetsWhenShopperIsComing({Function onButtonPressed, double height, T
             ),
           ),
           RoundedButton(
-            text: Text(
+            child: Text(
               'Back to home',
               style: TextStyle(
                 color: Colors.white,

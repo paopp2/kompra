@@ -9,3 +9,6 @@ final Geoflutterfire geo = Geoflutterfire();
 final CollectionReference clientsCollection = fireStore.collection('clients');
 final CollectionReference pendingTransactionsCollection = fireStore.collection('pending_transactions');
 final CollectionReference shoppersCollection = fireStore.collection('shoppers');
+
+//GROCERY ITEMS
+final DocumentReference alcoholicDrinksDocument = fireStore.collection('grocery_items').document('alcoholic');

@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kompra/constants.dart';
 
@@ -44,6 +47,33 @@ class DefaultFAB extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: kDarkerAccentColor,
+      child: Icon(
+        icon,
+        color: Colors.white,
+      ),
+      onPressed: onPressed,
+    );
+  }
+}
+
+class MiniFAB extends StatelessWidget {
+  const MiniFAB({
+    @required this.icon,
+    @required this.onPressed,
+    this.backgroundColor = kPrimaryColor,
+  });
+
+  final IconData icon;
+  final Function onPressed;
+  final Color backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      heroTag: null,
+      elevation: 0,
+      backgroundColor: backgroundColor,
+      mini: true,
       child: Icon(
         icon,
         color: Colors.white,

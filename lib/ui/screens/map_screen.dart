@@ -10,81 +10,44 @@ import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:kompra/domain/models/transaction.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
+import 'package:kompra/ui/components/floating_action_buttons.dart';
 import 'package:kompra/ui/providers/providers.dart';
+import 'package:kompra/ui/screens/categories_screen.dart';
 import 'package:kompra/ui/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
 import 'package:kompra/domain/distance_and_travel_time.dart';
-import 'package:kompra/domain/separable_home_screen_functions.dart';
+import 'package:kompra/domain/separable_map_screen_functions.dart';
 
-class LocationScreen extends StatefulWidget {
+class MapScreen extends StatefulWidget {
   static String id = 'location_screen_id';
   @override
-  _LocationScreenState createState() => _LocationScreenState();
+  _MapScreenState createState() => _MapScreenState();
 }
 
-class _LocationScreenState extends State<LocationScreen> {
+class _MapScreenState extends State<MapScreen> {
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   Completer<GoogleMapController> _controller = Completer();
   List<PlacesSearchResult> nearbyPlaces = [];
   LatLng clientLocation;
   Stream<List<fstore.DocumentSnapshot>> shoppersStream;
-  StreamSubscription shoppersStreamSubscription;
-  StreamSubscription transactionPhaseStreamSubscription;
+//  StreamSubscription shoppersStreamSubscription;
+//  StreamSubscription transactionPhaseStreamSubscription;
   Uint8List shopperIcon;
   BitmapDescriptor markerIcon;
-  String clientAddress = 'Finding your location...';
+  String clientAddress = '...';
   bool shopperComing = false;
   String minsAway;
   bool isZoomedAlready = false;
-
-  //Gets default client location
-  Future getClientCurrentLocation() async {
-    location.Location loc = location.Location();
-    location.LatLng tempLatLng = await loc.getClientCurrentLocation();
-    LatLng tempGoogleLatLng = LatLng(tempLatLng.lat, tempLatLng.lng);
-    final GoogleMapController controller = await _controller.future;
-
-    final String clientLocationMarkerIdVal =
-        'client_location_marker_id_val';
-    final currentLocationMarkerId = MarkerId(clientLocationMarkerIdVal);
-    final result = await places.searchNearbyWithRankBy(
-      Location(tempGoogleLatLng.latitude, tempGoogleLatLng.longitude),
-      'distance',
-      type: 'point_of_interest',
-    );
-    String placeId;
-    if (result.status == "OK") {
-      PlacesSearchResult nearestPlace = result.results[0];
-      print(nearestPlace.name);
-      placeId = (nearestPlace.placeId);
-    } else {
-      print(result.errorMessage);
-    }
-    PlacesDetailsResponse detail = await places.getDetailsByPlaceId(placeId);
-    String address = detail.result.formattedAddress;
-    setState(() {
-      clientLocation = tempGoogleLatLng;
-      clientAddress = address;
-      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: clientLocation,
-        zoom: 18,
-      )));
-      final Marker clientCurrentLocationMarker = Marker(
-        markerId: currentLocationMarkerId,
-        position: clientLocation,
-        infoWindow:
-        InfoWindow(title: clientLocationMarkerIdVal, snippet: '*'),
-      );
-      markers[currentLocationMarkerId] = clientCurrentLocationMarker;
-    });
-  }
+  TransactionPhase phase;
+  //temp
+  List<Widget> widgetList = [];
 
   Future<Null> setClientLocation(Prediction p) async {
     final GoogleMapController controller = await _controller.future;
     if (p != null) {
       String placeId = p.placeId;
-      PlacesDetailsResponse detail = await places.getDetailsByPlaceId(placeId);
+      PlacesDetailsResponse detail = await kPlaces.getDetailsByPlaceId(placeId);
       double lat = detail.result.geometry.location.lat;
       double lng = detail.result.geometry.location.lng;
       final clientLocationMarkerIdVal = 'client_location_marker_id_val';
@@ -107,6 +70,7 @@ class _LocationScreenState extends State<LocationScreen> {
           InfoWindow(title: clientLocationMarkerIdVal, snippet: '*'),
         );
         markers[clientLocationMarkerId] = clientCurrentLocationMarker;
+        Provider.of<PendingTransaction>(context, listen: false).saveClientMarker(clientCurrentLocationMarker);
       });
     }
   }
@@ -127,37 +91,33 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    Provider.of<PendingTransaction>(context, listen: false).transaction = Transaction();
-    Provider.of<PendingTransaction>(context, listen: false).transaction.phase = TransactionPhase.idle;
-    getClientCurrentLocation();
-    getBytesFromAsset('images/shopper_marker_icon.png', 100).then((icon) {
-      setState(() {
-        shopperIcon = icon;
-        print('Icon instantiated');
-      });
-    });
-  }
-
-  @override
   void dispose() {
     super.dispose();
-    shoppersStreamSubscription.cancel();
-    transactionPhaseStreamSubscription.cancel();
+//    shoppersStreamSubscription.cancel();
+//    transactionPhaseStreamSubscription.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
+    if(clientLocation == null && phase == null) {
+      setState(() {
+        Transaction temp = Provider.of<PendingTransaction>(context, listen: false).transaction;
+        clientAddress = temp.locationName;
+        fstore.GeoPoint tempGeoPoint = temp.location['geopoint'];
+        clientLocation = LatLng(tempGeoPoint.latitude, tempGeoPoint.longitude);
+        phase = temp.phase;
+      });
+    }
+
     if(shopperIcon != null) markerIcon = BitmapDescriptor.fromBytes(shopperIcon);
 
-    Stream<TransactionPhase> transactionPhaseStream =
-      Stream.value(Provider.of<PendingTransaction>(context,listen: false).transaction.phase);
+//    Stream<TransactionPhase> transactionPhaseStream =
+//      Stream.value(Provider.of<PendingTransaction>(context,listen: false).transaction.phase);
 
-    transactionPhaseStreamSubscription = transactionPhaseStream.listen((phase) {
-      print('My stream: ${phase.toString()}');
+//    transactionPhaseStreamSubscription = transactionPhaseStream.listen((phase) {
+//      print('My stream: ${phase.toString()}');
       if(phase == TransactionPhase.coming && !shopperComing) {
-        shoppersStreamSubscription.pause();
+//        shoppersStreamSubscription.pause();
         MarkerId clientMarkerIdTemp = MarkerId('client_location_marker_id_val');
         Marker clientMarkerSaver = markers[MarkerId('client_location_marker_id_val')];
         markers.clear();
@@ -184,31 +144,40 @@ class _LocationScreenState extends State<LocationScreen> {
               markerIcon: markerIcon
             );
             markers[myShopperLocationMarker.markerId] = myShopperLocationMarker;
-            if(!isZoomedAlready && shoppersStreamSubscription.isPaused)
+//            if(!isZoomedAlready && shoppersStreamSubscription.isPaused)
                 zoomToTwoMarkers(markers);
           });
         });
       }
-    });
+//    });
 
-    if(clientLocation != null && shoppersStream == null && markerIcon != null && !shopperComing) {
-      shoppersStream = FirebaseTasks.getNearestShoppersStream(clientLocation);
-      shoppersStreamSubscription = shoppersStream.listen((List<fstore.DocumentSnapshot> documentList) {
-        for(var doc in documentList) {
-          print('${doc.data['shopperName']}');
-          fstore.GeoPoint geoPoint = doc.data['location']['geopoint'];
-          Marker shopperLocationMarker = createMarker(
-            doc: doc,
-            markerIcon: markerIcon,
-            geoPoint: geoPoint,
-          );
-          markers[shopperLocationMarker.markerId] = shopperLocationMarker;
-        }
-        setState((){});
-      });
-    }
+//    if(clientLocation != null && shoppersStream == null && markerIcon != null && !shopperComing) {
+//      shoppersStream = FirebaseTasks.getNearestShoppersStream(clientLocation);
+//      shoppersStreamSubscription = shoppersStream.listen((List<fstore.DocumentSnapshot> documentList) {
+//        for(var doc in documentList) {
+//          print('${doc.data['shopperName']}');
+//          fstore.GeoPoint geoPoint = doc.data['location']['geopoint'];
+//          Marker shopperLocationMarker = createMarker(
+//            doc: doc,
+//            markerIcon: markerIcon,
+//            geoPoint: geoPoint,
+//          );
+//          markers[shopperLocationMarker.markerId] = shopperLocationMarker;
+//        }
+//        setState((){});
+//      });
+//    }
 
     List<Widget> getMapScreenWidgets(bool isDelivering) {
+      final clientLocationMarkerIdVal = 'client_location_marker_id_val';
+      final clientLocationMarkerId = MarkerId(clientLocationMarkerIdVal);
+      final Marker clientCurrentLocationMarker = Marker(
+        markerId: clientLocationMarkerId,
+        position: clientLocation,
+        infoWindow:
+        InfoWindow(title: clientLocationMarkerIdVal, snippet: '*'),
+      );
+      markers[clientLocationMarkerId] = clientCurrentLocationMarker;
       List<Widget> baseWidgetList = [
         GoogleMap(
           onMapCreated: (GoogleMapController controller) {
@@ -222,13 +191,12 @@ class _LocationScreenState extends State<LocationScreen> {
             }
           },
           initialCameraPosition: CameraPosition(
-            target: LatLng(10.3831373, 123.9720752),
+            target: clientLocation,
             zoom: 15,
           ),
           markers: Set<Marker>.of(markers.values),
         ),
       ];
-      
       if(!isDelivering) {
         baseWidgetList.addAll(
           getWidgetsWhenIdle(
@@ -265,12 +233,13 @@ class _LocationScreenState extends State<LocationScreen> {
             minsAway: minsAway,
             onButtonPressed: () {
               setState(() {
-                getClientCurrentLocation();
+//                getClientCurrentLocation();
                 shopperComing = false;
                 isZoomedAlready = false;
                 Provider.of<PendingTransaction>(context, listen: false).transaction = Transaction();
                 Provider.of<PendingTransaction>(context, listen: false).transaction.phase = TransactionPhase.idle;
-                shoppersStreamSubscription.resume();
+                Navigator.popUntil(context, ModalRoute.withName(CategoriesScreen.id));
+//                shoppersStreamSubscription.resume();
               });
             },
           ),
@@ -279,49 +248,47 @@ class _LocationScreenState extends State<LocationScreen> {
       return baseWidgetList;
     }
 
-    return WillPopScope(
-      onWillPop: () {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-        return Future.value(true);
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: kDarkerAccentColor,
-          leading: IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              //TODO: Open Navigation drawer
-            },
-          ),
-          title: SizedBox(
-            height: 20,
-            child: kKompraWordLogoWhite,
-          ),
-          centerTitle: false,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                //TODO: Do appbar three dots action (temp: sign out currentUser)
-                FirebaseTasks.signOut();
-                Provider.of<CurrentUser>(context, listen: false).client = null;
-                print('Current user: ${Provider.of<CurrentUser>(context, listen: false).client}');
-                Navigator.pushNamed(context, WelcomeScreen.id);
-              },
-            ),
-          ],
+    return Scaffold(
+//      appBar: AppBar(
+//        backgroundColor: kDarkerAccentColor,
+//        leading: IconButton(
+//          icon: Icon(
+//            Icons.menu,
+//            color: Colors.white,
+//          ),
+//          onPressed: () {
+//            //TODO: Open Navigation drawer
+//          },
+//        ),
+//        title: SizedBox(
+//          height: 20,
+//          child: kKompraWordLogoWhite,
+//        ),
+//        centerTitle: false,
+//        actions: <Widget>[
+//          IconButton(
+//            icon: Icon(
+//              Icons.more_vert,
+//              color: Colors.white,
+//            ),
+//            onPressed: () {
+//              //TODO: Do appbar three dots action
+//            },
+//          ),
+//        ],
+//      ),
+      body: SafeArea(
+        child: Stack(
+          children: getMapScreenWidgets(shopperComing),
         ),
-        body: SafeArea(
-          child: Stack(
-            children: getMapScreenWidgets(shopperComing),
-          ),
-        ),
+      ),
+      floatingActionButton: DefaultFAB(
+        icon: Icons.check,
+        onPressed: () {
+          Provider.of<PendingTransaction>(context, listen: false).transaction.locationName = clientAddress;
+          Provider.of<PendingTransaction>(context, listen: false).transaction.location = FirebaseTasks.getGeoFlutterPoint(clientLocation);
+          Navigator.pop(context);
+        },
       ),
     );
   }

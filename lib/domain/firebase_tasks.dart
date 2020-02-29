@@ -101,4 +101,14 @@ class FirebaseTasks {
         .within(center: geoCenter, radius: radius, field: field);
     return stream;
   }
+
+  static Stream<QuerySnapshot> getAlcoholicDrinksStream({String subtype}) {
+    Stream<QuerySnapshot> stream;
+    switch(subtype) {
+      case null: {
+        stream = alcoholicDrinksDocument.collection('common').orderBy('itemName').snapshots();
+      } break;
+    }
+    return stream;
+  }
 }

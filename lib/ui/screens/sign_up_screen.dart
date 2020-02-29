@@ -7,7 +7,8 @@ import 'package:kompra/constants.dart';
 import 'package:kompra/ui/components/floating_action_buttons.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:kompra/ui/providers/providers.dart';
-import 'package:kompra/ui/screens/location_screen.dart';
+import 'package:kompra/ui/screens/categories_screen.dart';
+import 'package:kompra/ui/screens/map_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
@@ -234,7 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         clientPhoneNum: phoneNum,
                       );
                   print('Current user: ${Provider.of<CurrentUser>(context, listen: false).client}');
-                  Navigator.of(context).pushNamed(LocationScreen.id);
+                  Navigator.of(context).pushNamed(CategoriesScreen.id);
                 }
               }
             },

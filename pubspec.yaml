@@ -34,7 +34,7 @@ dependencies:
   flutter_google_places: ^0.2.3
   geocoder: ^0.2.1
   google_maps_webservice: ^0.0.16
-  google_maps_flutter: ^0.5.21+15
+  google_maps_flutter: ^0.5.24+1
   # component design packages
   flutter_spinkit: ^4.1.1+1
   rflutter_alert: ^1.0.3
