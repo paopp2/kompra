@@ -44,7 +44,6 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
   void initState() {
     super.initState();
     var temp = Provider.of<PendingTransaction>(context, listen: false).transaction;
-    print('Transaction phase: ${temp.phase.toString()}');
     if(temp.phase == my.TransactionPhase.accepted) {
       isAccepted = true;
       groceryList = temp.groceryList;

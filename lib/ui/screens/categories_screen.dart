@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kompra/constants.dart';
@@ -166,6 +167,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       crossAxisCount: 2,
                       children: kCategoriesTileList,
                     ),
+//                    child: ListView(
+//                      children: <Widget>[
+//                        Image(
+//                          image: AssetImage('images/category_background_images/category_wine_and_liquor.png'),
+//                        ),
+//                        Image(
+//                          image: AssetImage('images/category_background_images/category_snacks.png'),
+//                        )
+//                      ],
+//                    ),
                   ),
                 ],
               ),

@@ -54,19 +54,31 @@ class ChosenItem extends ChangeNotifier {
 }
 
 class MyGroceryCart extends ChangeNotifier {
-//  MyGroceryCart({
-//    this.cart,
-//  });
-//  GroceryCart cart;
 
   List<Item> itemList = [];
   int totalNum = 0;
   double totalPrice = 0.00;
 
   void addItem(Item item) {
-    itemList.add(item);
-    totalNum+=(item.quantity);
-    totalPrice+=(item.itemPrice * item.quantity);
+    int checkIndex = itemList.indexOf(item);
+    if(checkIndex != -1) {
+//      int increment = item.quantity - itemList[checkIndex].quantity;
+//      print('increment: $increment');
+//      totalNum+=(increment);
+//      totalPrice+=(item.itemPrice * (increment));
+      itemList.removeAt(checkIndex);
+      itemList.insert(checkIndex, item);
+    } else {
+      itemList.add(item);
+    }
+    totalNum+=item.quantity;
+    totalPrice+=(item.quantity * item.itemPrice);
+    notifyListeners();
+  }
+
+  void decrementFromItemValues(Item item) {
+    totalNum-=(item.quantity);
+    totalPrice-=(item.quantity * item.itemPrice);
   }
 
   void resetGroceryCart() {
@@ -85,5 +97,4 @@ class MyGroceryCart extends ChangeNotifier {
 //  void addToTotalPrice(double subtotal) {
 //    totalPrice+=subtotal;
 //  }
-  notifyListeners();
 }

@@ -25,7 +25,14 @@ class _SpecificItemScreenState extends State<SpecificItemScreen> {
   void initState() {
     super.initState();
     chosenItem = Provider.of<ChosenItem>(context, listen: false).item;
-    qty = Provider.of<ChosenItem>(context, listen: false).item.quantity;
+    qty = 0;
+    Provider.of<MyGroceryCart>(context, listen: false).itemList.forEach((i) {
+      if(i.itemName == Provider.of<ChosenItem>(context, listen: false).item.itemName) {
+        Provider.of<MyGroceryCart>(context, listen: false).decrementFromItemValues(i);
+        chosenItem = i;
+        qty = i.quantity;
+      }
+    });
   }
 
   @override

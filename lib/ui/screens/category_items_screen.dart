@@ -49,17 +49,17 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
         List<Item> itemList = [];
         if(snapshot.hasData) {
           final itemsData = snapshot.data.documents;
-          for(var drink in itemsData) {
-            Item item = Item(
-              itemCode: drink.data['itemCode'],
-              itemName: drink.data['itemName'],
-              itemDetail: drink.data['itemDetail'],
-              itemUnit: drink.data['itemUnit'],
-              itemPrice: drink.data['itemPrice'].toDouble(),
-              itemImageUrl: drink.data['itemImageUrl'],
+          for(var item in itemsData) {
+            Item i = Item(
+              itemCode: item.data['itemCode'],
+              itemName: item.data['itemName'],
+              itemDetail: item.data['itemDetail'],
+              itemUnit: item.data['itemUnit'],
+              itemPrice: item.data['itemPrice'].toDouble(),
+              itemImageUrl: item.data['itemImageUrl'],
               quantity: 0,
             );
-            itemList.add(item);
+            itemList.add(i);
           }
         } else {
           print('None');
@@ -67,10 +67,18 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
 
         return LayoutBuilder(
           builder: (context, constraints) {
+            int quantity;
             for(var item in itemList) {
               ItemTile itemTile = ItemTile(
                 constraints: constraints,
                 item: item,
+                quantity:
+                  (Provider.of<MyGroceryCart>(context, listen: true).itemList.any((groceryItem) {
+                    if(item.itemName == groceryItem.itemName) {
+                      quantity = groceryItem.quantity;
+                    }
+                    return item.itemName == groceryItem.itemName;
+                  })) ? quantity : 0,
               );
               itemTileList.add(itemTile);
             }

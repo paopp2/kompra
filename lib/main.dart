@@ -5,7 +5,6 @@ import 'package:kompra/ui/providers/providers.dart';
 import 'package:kompra/ui/screens/categories_screen.dart';
 import 'package:kompra/ui/screens/category_items_screen.dart';
 import 'package:kompra/ui/screens/delivering_screen.dart';
-import 'package:kompra/ui/screens/scratch.dart';
 import 'package:kompra/ui/screens/specific_item_screen.dart';
 import 'constants.dart';
 import 'package:kompra/ui/screens/finding_shopper_screen.dart';
@@ -96,7 +95,6 @@ class _MyAppState extends State<MyApp> {
         ShopperAcceptedScreen.id: (context) => ShopperAcceptedScreen(),
         GroceryListFormScreen.id: (context) => GroceryListFormScreen(),
         LoadingScreen.id: (context) => LoadingScreen(),
-        ScratchScreen.id: (context) => ScratchScreen(),
         CategoriesScreen.id : (context) => CategoriesScreen(),
         CategoryItemsScreen.id : (context) => CategoryItemsScreen(),
         SpecificItemScreen.id : (context) => SpecificItemScreen(),

@@ -9,10 +9,12 @@ class ItemTile extends StatelessWidget {
   const ItemTile({
     this.item,
     this.constraints,
+    this.quantity,
   });
 
   final BoxConstraints constraints;
   final Item item;
+  final int quantity;
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +73,10 @@ class ItemTile extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: CircleAvatar(
-                              child: (item.quantity > 0) ? Text(
-                                '${item.quantity}',
+                              child: (quantity != 0) ? Text(
+                                '$quantity',
                                 style: TextStyle(
-                                  color: Colors.green[500],
+                                  color: Colors.black,
                                 ),
                               ) : Icon(
                                 Icons.add,
