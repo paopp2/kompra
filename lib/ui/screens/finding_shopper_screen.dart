@@ -76,6 +76,10 @@ class _FindingShopperScreenState extends State<FindingShopperScreen> {
           floatingActionButton: DefaultExtendedFAB(
             onPressed: () {
               sub.cancel();
+              //TODO: Error fix this shit
+              my.Transaction lastTransaction = Provider.of<PendingTransaction>(context, listen: false).transaction;
+              Provider.of<PendingTransaction>(context, listen: false).resetTransaction(lastTransaction);
+              Provider.of<MyGroceryCart>(context, listen: false).resetGroceryCart();
               Navigator.popUntil(context, ModalRoute.withName(CategoriesScreen.id));
               FirebaseTasks.deleteDocument(docID);
             },

@@ -26,14 +26,18 @@ class Transaction {
     this.groceryList,
     this.phase,
     this.docID,
+    this.totalPrice,
+    this.serviceFee,
   });
 
   Client client;
   Shopper shopper;
   var location;
   Timestamp timestamp;
-  String groceryList;
+  List<Map> groceryList;
   String locationName;
   TransactionPhase phase;
   String docID;
+  double totalPrice;
+  double serviceFee;
 }

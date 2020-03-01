@@ -27,7 +27,7 @@ class CheckoutReceiptScreen extends StatefulWidget {
 
 class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
 
-  String _groceryList;
+  List<Map> _groceryList;
   String transactionPhase = 'Heading to grocery shop';
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   bool isAccepted;
@@ -39,6 +39,8 @@ class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
   TextEditingController serviceFeeTextFieldController = TextEditingController();
   //temp
   List<Widget> groceryWidgetsList = [];
+  double totalPrice;
+  double serviceFee;
 
   @override
   void initState() {
@@ -46,8 +48,8 @@ class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
     var temp = Provider.of<PendingTransaction>(context, listen: false).transaction;
     if(temp.phase == my.TransactionPhase.accepted) {
       isAccepted = true;
-      groceryList = temp.groceryList;
-      groceryListTextFieldController.text = groceryList;
+//      groceryList = temp.groceryList;
+//      groceryListTextFieldController.text = groceryList;
       WidgetsBinding.instance
           .addPostFrameCallback((_) => FoundShopperAlert.show(context, temp),);
     } else {
@@ -57,6 +59,13 @@ class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    //initialize serviceFee and totalPrice
+    if(serviceFee == null && totalPrice == null) {
+      serviceFee = 50.0 + (Provider.of<MyGroceryCart>(context, listen: false).totalNum * 5);
+      totalPrice = Provider.of<MyGroceryCart>(context, listen: false).totalPrice + serviceFee;
+    }
+
     String docID = Provider.of<PendingTransaction>(context, listen: false).transaction.docID;
     StreamSubscription<DocumentSnapshot> sub;
     if(isAccepted) sub = FirebaseTasks.getTransactionDocumentSnapshot(docID).listen((documentSnapshot) {
@@ -97,7 +106,6 @@ class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
     locationTextFieldFormController.text = Provider.of<PendingTransaction>(context, listen: false).transaction.locationName;
     if(transactionPhase != null && isAccepted) phaseTextFieldController.text = transactionPhase;
     List<Widget> getGroceryListScreenBody(BoxConstraints constraints) {
-      double serviceFee = 50.0 + (Provider.of<MyGroceryCart>(context, listen: false).totalNum * 5);
       return <Widget>[
         Card(
           elevation: 10,
@@ -178,7 +186,7 @@ class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
                 ),
                 SizedBox(height: 10,),
                 Center(
-                  child: Text('₱${Provider.of<MyGroceryCart>(context, listen: false).totalPrice + serviceFee}'),
+                  child: Text('₱$totalPrice'),
                 ),
               ],
             ),
@@ -268,13 +276,25 @@ class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
             icon: Icons.face,
             label: 'Find a shopper',
             onPressed: () {
-              _groceryList = '';
+              _groceryList = [];
               for(var item in Provider.of<MyGroceryCart>(context, listen: false).itemList) {
-                _groceryList = _groceryList + item.itemName + '    ';
+                Map temp = {
+                  'itemName' : item.itemName,
+                  'itemDetail' : item.itemDetail,
+                  'itemUnit' : item. itemUnit,
+                  'itemPrice' : item.itemPrice,
+                  'quantity' : item.quantity,
+                  'subtotal' : item.subtotal,
+                };
+                _groceryList.add(temp);
               }
               if (_fbKey.currentState.saveAndValidate()) {
                 Provider.of<PendingTransaction>(context, listen: false).transaction.groceryList = _groceryList;
                 Provider.of<PendingTransaction>(context, listen: false).transaction.phase = my.TransactionPhase.finding;
+                Provider.of<PendingTransaction>(context, listen: false).setTotalPriceAndServiceFee(
+                  totalPrice: totalPrice,
+                  serviceFee: serviceFee,
+                );
                 Provider.of<PendingTransaction>(context, listen: false).transaction.client =
                   Provider.of<CurrentUser>(context, listen: false).client;
                 my.Transaction temp = Provider.of<PendingTransaction>(context, listen: false).transaction;

@@ -67,6 +67,8 @@ class FirebaseTasks {
       'locationName' : trans.locationName,
       'transactionPhase' : trans.phase.toString(),
       'groceryList' : trans.groceryList,
+      'serviceFee' : trans.serviceFee,
+      'totalPrice' : trans.totalPrice,
     });
   }
 

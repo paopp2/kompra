@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kompra/domain/models/client.dart';
-import 'package:kompra/domain/models/grocery_cart.dart';
 import 'package:kompra/domain/models/transaction.dart';
 import 'package:kompra/domain/models/category.dart';
 import 'package:kompra/domain/models/item.dart';
@@ -11,7 +10,6 @@ class CurrentUser extends ChangeNotifier {
     this.client,
   });
   Client client;
-  notifyListeners();
 }
 
 class PendingTransaction extends ChangeNotifier {
@@ -23,6 +21,7 @@ class PendingTransaction extends ChangeNotifier {
 
   void saveClientMarker(Marker m) {
     clientLocationMarker = m;
+    notifyListeners();
   }
 
   void resetTransaction(Transaction lastTransaction) {
@@ -32,9 +31,15 @@ class PendingTransaction extends ChangeNotifier {
         location: lastTransaction.location,
         phase: TransactionPhase.idle,
       );
+      notifyListeners();
     }
   }
-  notifyListeners();
+
+  void setTotalPriceAndServiceFee({double totalPrice, double serviceFee}) {
+    transaction.totalPrice = totalPrice;
+    transaction.serviceFee = serviceFee;
+    notifyListeners();
+  }
 }
 
 class ChosenCategory extends ChangeNotifier {
