@@ -8,7 +8,7 @@ import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:kompra/domain/models/grocery_cart.dart';
 import 'package:kompra/domain/models/transaction.dart';
 import 'package:kompra/ui/providers/providers.dart';
-import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
+import 'package:kompra/ui/screens/checkout_receipt_screen.dart';
 import 'package:kompra/domain/location.dart' as location;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
@@ -108,7 +108,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, GroceryListFormScreen.id);
+                    Navigator.pushNamed(context, CheckoutReceiptScreen.id);
                   },
                 ),
               ],

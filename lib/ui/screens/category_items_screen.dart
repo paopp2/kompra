@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kompra/constants.dart';
 import 'package:kompra/domain/models/category.dart';
 import 'package:kompra/ui/providers/providers.dart';
-import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
+import 'package:kompra/ui/screens/checkout_receipt_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:kompra/domain/models/item.dart';
@@ -90,7 +90,7 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
                   IconButton(
                     icon: Icon(Icons.local_grocery_store),
                     onPressed: () {
-                      Navigator.pushNamed(context, GroceryListFormScreen.id);
+                      Navigator.pushNamed(context, CheckoutReceiptScreen.id);
                     },
                   ),
                 ],

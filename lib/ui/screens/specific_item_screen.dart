@@ -20,17 +20,20 @@ class _SpecificItemScreenState extends State<SpecificItemScreen> {
   Item chosenItem;
   int qty;
   double subtotal;
+  String buttonTitle;
 
   @override
   void initState() {
     super.initState();
     chosenItem = Provider.of<ChosenItem>(context, listen: false).item;
     qty = 0;
+    buttonTitle = 'Add to cart';
     Provider.of<MyGroceryCart>(context, listen: false).itemList.forEach((i) {
       if(i.itemName == Provider.of<ChosenItem>(context, listen: false).item.itemName) {
-        Provider.of<MyGroceryCart>(context, listen: false).decrementFromItemValues(i);
+        Provider.of<MyGroceryCart>(context, listen: false).decrementItem(i);
         chosenItem = i;
         qty = i.quantity;
+        buttonTitle = 'Update cart';
       }
     });
   }
@@ -175,9 +178,9 @@ class _SpecificItemScreenState extends State<SpecificItemScreen> {
                 right: 20,
                 left: 20,
                 child: RoundedButton(
-                  isDisabled: qty == 0,
+                  isDisabled: (qty == 0),
                   child: Text(
-                    'Add to cart',
+                    buttonTitle,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -189,8 +192,6 @@ class _SpecificItemScreenState extends State<SpecificItemScreen> {
                       MyGroceryCart tempGroceryCart = Provider.of<MyGroceryCart>(context, listen: false);
                       chosenItem.setQuantityAndSubtotal(qty);
                       Provider.of<MyGroceryCart>(context, listen: false).addItem(chosenItem);
-//                      Provider.of<MyGroceryCart>(context, listen: false).addToTotalPrice(tempGroceryCart.totalPrice + subtotal);
-//                      Provider.of<MyGroceryCart>(context, listen: false).incrementToTotalNum(tempGroceryCart.totalNum + qty);
                       MyGroceryCart tempGroceryCart2 = Provider.of<MyGroceryCart>(context, listen: false);
                       for(var item in Provider.of<MyGroceryCart>(context, listen: false).itemList) {
                         print('${item.quantity} ${item.itemName} ${item.itemPrice}');

@@ -62,10 +62,6 @@ class MyGroceryCart extends ChangeNotifier {
   void addItem(Item item) {
     int checkIndex = itemList.indexOf(item);
     if(checkIndex != -1) {
-//      int increment = item.quantity - itemList[checkIndex].quantity;
-//      print('increment: $increment');
-//      totalNum+=(increment);
-//      totalPrice+=(item.itemPrice * (increment));
       itemList.removeAt(checkIndex);
       itemList.insert(checkIndex, item);
     } else {
@@ -76,9 +72,14 @@ class MyGroceryCart extends ChangeNotifier {
     notifyListeners();
   }
 
-  void decrementFromItemValues(Item item) {
+  void decrementItem(Item item) {
     totalNum-=(item.quantity);
     totalPrice-=(item.quantity * item.itemPrice);
+  }
+
+  void removeItem(Item item) {
+    decrementItem(item);
+    itemList.removeAt(itemList.indexOf(item));
   }
 
   void resetGroceryCart() {

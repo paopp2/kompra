@@ -76,13 +76,15 @@ class ItemTile extends StatelessWidget {
                               child: (quantity != 0) ? Text(
                                 '$quantity',
                                 style: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 18,
                                   color: Colors.black,
                                 ),
                               ) : Icon(
                                 Icons.add,
-                                color: Colors.green[500],
+                                color: Colors.blueGrey[500],
                               ),
-                              backgroundColor: Colors.green[100] ,
+                              backgroundColor: (quantity != 0) ? Colors.green[200] : Colors.blueGrey[100],
                             ),
                           ),
                         ],

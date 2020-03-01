@@ -9,10 +9,9 @@ import 'package:kompra/ui/screens/specific_item_screen.dart';
 import 'constants.dart';
 import 'package:kompra/ui/screens/finding_shopper_screen.dart';
 import 'package:kompra/ui/screens/location_chooser_screen.dart';
-import 'package:kompra/ui/screens/grocery_list_form_screen.dart';
+import 'package:kompra/ui/screens/checkout_receipt_screen.dart';
 import 'package:kompra/ui/screens/loading_screen.dart';
 import 'package:kompra/ui/screens/login_screen.dart';
-import 'package:kompra/ui/screens/shopper_accepted_screen.dart';
 import 'package:kompra/ui/screens/sign_up_screen.dart';
 import 'ui/screens/welcome_screen.dart';
 import 'domain/firebase_tasks.dart';
@@ -92,8 +91,7 @@ class _MyAppState extends State<MyApp> {
         FindingShopperScreen.id: (context) => FindingShopperScreen(),
         SignUpScreen.id: (context) => SignUpScreen(),
         LoginScreen.id: (context) => LoginScreen(),
-        ShopperAcceptedScreen.id: (context) => ShopperAcceptedScreen(),
-        GroceryListFormScreen.id: (context) => GroceryListFormScreen(),
+        CheckoutReceiptScreen.id: (context) => CheckoutReceiptScreen(),
         LoadingScreen.id: (context) => LoadingScreen(),
         CategoriesScreen.id : (context) => CategoriesScreen(),
         CategoryItemsScreen.id : (context) => CategoryItemsScreen(),

@@ -19,13 +19,13 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:kompra/ui/components/back_icon_button.dart';
 import 'package:kompra/ui/components/order_summary_table.dart';
 
-class GroceryListFormScreen extends StatefulWidget {
-  static String id = 'issue_form_screen';
+class CheckoutReceiptScreen extends StatefulWidget {
+  static String id = 'check_out_receipt_screen';
   @override
-  _GroceryListFormScreenState createState() => _GroceryListFormScreenState();
+  _CheckoutReceiptScreenState createState() => _CheckoutReceiptScreenState();
 }
 
-class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
+class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
 
   String _groceryList;
   String transactionPhase = 'Heading to grocery shop';
@@ -99,38 +99,6 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
     List<Widget> getGroceryListScreenBody(BoxConstraints constraints) {
       double serviceFee = 50.0 + (Provider.of<MyGroceryCart>(context, listen: false).totalNum * 5);
       return <Widget>[
-//      TextFormField(
-//        maxLines: 2,
-//        readOnly: true,
-//        controller: locationTextFieldFormController,
-//        decoration: kDefaultTextFieldFormDecoration.copyWith(
-//            labelText: 'Address'
-//        ),
-//        onTap: () {
-//          Navigator.pushNamed(context, MapScreen.id);
-//        },
-//      ),
-//      SizedBox(height: 15,),
-//      FormBuilderTextField(
-//        onChanged: (value) {
-//          _groceryList = value;
-//        },
-//        maxLines: 10,
-//        controller: groceryListTextFieldController,
-//        attribute: 'grocery_list',
-//        readOnly: (isAccepted) ? true : false,
-//        decoration: kDefaultTextFieldFormDecoration.copyWith(
-//          labelText: 'Grocery List',
-//          alignLabelWithHint: true,
-//          hintText: 'Enter your grocery list in bullet form',
-//        ),
-//        style: TextStyle(
-//          height: 1.5,
-//        ),
-//        validators: [
-//          FormBuilderValidators.required(),
-//        ],
-//      ),
         Card(
           elevation: 10,
           shape: RoundedRectangleBorder(
@@ -155,12 +123,7 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    FlatButton(
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      textColor: kPrimaryColor,
-                      child: Text(
-                        'Edit',
-                      ),
+                    EditButton(
                       onPressed: () {
                         Navigator.pushNamed(context, LocationChooserScreen.id);
                       },
@@ -184,6 +147,16 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
                       ),
                     ],
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    EditButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
                 ),
                 Divider(),
                 Text(
@@ -216,9 +189,6 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-
-        //TODO: Chnge to actual service fee
-//        serviceFeeTextFieldController.text = 'Php50';
         groceryWidgetsList = getGroceryListScreenBody(constraints);
         if (isAccepted) {
           groceryWidgetsList.add(
@@ -245,22 +215,6 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
               ),
             ),
           );
-//          getGroceryListScreenBody(constraints).addAll(
-//              [
-//                SizedBox(height: 15,),
-//                TextFormField(
-//                  readOnly: true,
-//                  textAlign: TextAlign.center,
-//                  controller: serviceFeeTextFieldController,
-//                  decoration: kDefaultTextFieldFormDecoration.copyWith(
-//                    labelText: 'Service fee',
-//                  ),
-//                  onTap: () {
-//                    Navigator.pop(context);
-//                  },
-//                ),
-//              ]
-//          );
         }
 
         return Scaffold(
@@ -280,27 +234,30 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
                   ),
                 ),
               ),
-              ListView(
-                children: <Widget>[
-                  SizedBox(height: constraints.maxHeight * 1/10,),
-                  Container(
-                    height: constraints.maxHeight * 0.7,
-                    width: constraints.maxWidth * 0.9,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 30,
-                      ),
-                      child: FormBuilder(
-                        key: _fbKey,
-                        child: ListView(
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(height: constraints.maxHeight * 1/10,),
+                    Container(
+                      height: constraints.maxHeight * 0.8,
+                      width: constraints.maxWidth * 0.9,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 30,
+                        ),
+                        child: FormBuilder(
+                          key: _fbKey,
+                          child: ListView(
 //                          children: getGroceryListScreenBody(constraints),
-                            children: groceryWidgetsList,
+                              children: groceryWidgetsList,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               //SizedBox below essentially means show nothing instead of BackIconButton
               //Putting null there returns error
@@ -333,6 +290,26 @@ class _GroceryListFormScreenState extends State<GroceryListFormScreen> {
           ),
         );
       }
+    );
+  }
+}
+
+class EditButton extends StatelessWidget {
+  const EditButton({
+    @required this.onPressed,
+  });
+
+  final Function onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      textColor: kPrimaryColor,
+      child: Text(
+        'Edit',
+      ),
+      onPressed: onPressed,
     );
   }
 }
