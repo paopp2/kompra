@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:kompra/constants.dart';
 import 'package:kompra/domain/models/grocery_cart.dart';
+import 'package:kompra/ui/components/custom_icon_button.dart';
 import 'package:kompra/ui/components/floating_action_buttons.dart';
 import 'package:kompra/ui/components/rounded_button.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -202,8 +203,20 @@ class _SpecificItemScreenState extends State<SpecificItemScreen> {
                   },
                 ),
               ),
-              Row(),
-              BackIconButton(),
+//              Row(),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 25,
+                ),
+                child: CustomIconButton(
+                  constraints: constraints,
+                  iconData: Icons.arrow_back,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
             ],
           ),
         );

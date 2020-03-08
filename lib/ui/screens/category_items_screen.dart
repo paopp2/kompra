@@ -2,12 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kompra/constants.dart';
 import 'package:kompra/domain/models/category.dart';
+import 'package:kompra/ui/components/custom_icon_button.dart';
 import 'package:kompra/ui/providers/providers.dart';
 import 'package:kompra/ui/screens/checkout_receipt_screen.dart';
+import 'package:kompra/ui/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:kompra/domain/models/item.dart';
 import 'package:kompra/ui/components/item_tile.dart';
+import 'package:kompra/ui/components/kompra_scaffold.dart';
 
 class CategoryItemsScreen extends StatefulWidget {
   static String id = 'category_items_screen_id';
@@ -82,17 +85,33 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
               );
               itemTileList.add(itemTile);
             }
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(chosenCategory.categoryTitle),
-                backgroundColor: kDarkerAccentColor,
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.local_grocery_store),
+            return KompraScaffold(
+              constraints: constraints,
+              customAppbarRow: Row(
+                children: <Widget>[
+                  CustomIconButton(
+                    constraints: constraints,
+                    iconData: Icons.arrow_back,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Text(
+                    chosenCategory.categoryTitle,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: constraints.maxWidth * 1/18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Spacer(),
+                  CustomIconButton(
+                    constraints: constraints,
+                    iconData: Icons.local_grocery_store,
                     onPressed: () {
                       Navigator.pushNamed(context, CheckoutReceiptScreen.id);
                     },
-                  ),
+                  )
                 ],
               ),
               body: ListView(

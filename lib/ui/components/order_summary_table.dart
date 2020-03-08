@@ -4,9 +4,11 @@ import 'package:kompra/domain/models/item.dart';
 class OrderSummaryTable extends StatelessWidget {
   const OrderSummaryTable({
     this.itemList,
+    this.textColor = Colors.black,
   });
 
   final List<Item> itemList;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +18,26 @@ class OrderSummaryTable extends StatelessWidget {
         cells: [
           DataCell(
             Text(
-                item.itemName
+              item.itemName,
+              style: TextStyle(
+                color: textColor,
+              ),
             ),
           ),
           DataCell(
             Text(
-                'x ${item.quantity}'
+              'x ${item.quantity}',
+              style: TextStyle(
+                color: textColor,
+              ),
             ),
           ),
           DataCell(
             Text(
-                '₱${item.subtotal}'
+              '₱${item.subtotal}',
+              style: TextStyle(
+                color: textColor,
+              ),
             ),
           ),
         ],
@@ -34,17 +45,32 @@ class OrderSummaryTable extends StatelessWidget {
       itemRows.add(tempRow);
     }
     return DataTable(
-      headingRowHeight: 30,
+      headingRowHeight: 20,
       columns: [
         DataColumn(
-          label: Text('Name'),
+          label: Text(
+            'Name',
+            style: TextStyle(
+              color: textColor,
+            ),
+          ),
         ),
         DataColumn(
-          label: Text('Qty'),
+          label: Text(
+            'Qty',
+            style: TextStyle(
+              color: textColor,
+            ),
+          ),
           numeric: true,
         ),
         DataColumn(
-          label: Text('Subtotal'),
+          label: Text(
+            'Subtotal',
+            style: TextStyle(
+              color: textColor,
+            ),
+          ),
           numeric: true,
         ),
       ],

@@ -10,6 +10,7 @@ import 'package:kompra/domain/firebase_tasks.dart';
 import 'package:kompra/ui/providers/providers.dart';
 import 'package:kompra/ui/screens/categories_screen.dart';
 import 'package:kompra/ui/screens/checkout_receipt_screen.dart';
+import 'package:kompra/ui/screens/delivering_screen.dart';
 import 'package:provider/provider.dart';
 
 class FindingShopperScreen extends StatefulWidget {
@@ -63,8 +64,8 @@ class _FindingShopperScreenState extends State<FindingShopperScreen> {
                         shopperPhoneNum: snapshot.data['shopperPhoneNum'],
                         shopperImageUrl: snapshot.data['shopperImageUrl'],
                       );
-                  Navigator.pushReplacementNamed(context, CheckoutReceiptScreen.id);
                   sub.cancel();
+                  Navigator.popAndPushNamed(context, DeliveringScreen.id);
                 }
               },
             );

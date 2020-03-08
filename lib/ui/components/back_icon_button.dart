@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kompra/ui/components/custom_icon_button.dart';
 
 class BackIconButton extends StatelessWidget {
   const BackIconButton({
@@ -14,12 +15,8 @@ class BackIconButton extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: 30,
-            ),
+          CustomIconButton(
+            iconData: Icons.arrow_back,
             onPressed: () {
               Navigator.pop(context);
             },
