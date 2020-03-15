@@ -17,6 +17,8 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:kompra/ui/screens/location_chooser_screen.dart';
 import 'package:kompra/ui/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:kompra/ui/components/menu_option_tile.dart';
 
 class CategoriesScreen extends StatefulWidget {
   static String id = 'grocery_items_screen_id';
@@ -27,7 +29,7 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   String clientAddress = 'Finding your location...';
-//  StreamSubscription transactionPhaseStreamSubscription;
+  PanelController panelController = PanelController();
 
   Future getClientCurrentLocation() async {
     location.Location loc = location.Location();
@@ -96,7 +98,27 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       child: LayoutBuilder(
         builder: (context, constraints) =>
           KompraScaffold(
+            controller: panelController,
             constraints: constraints,
+            menuOptions: <Widget>[
+              MenuOptionTile(
+                title: 'Sign out',
+                onPressed: () {
+                  FirebaseTasks.signOut();
+                  Provider.of<CurrentUser>(context, listen: false)
+                      .client = null;
+                  print(
+                      'Current user: ${Provider.of<CurrentUser>(context, listen: false).client}');
+                  Navigator.pushNamed(context, WelcomeScreen.id);
+                },
+              ),
+              MenuOptionTile(
+                title: 'Settings',
+                onPressed: () {
+                  //TODO: Open settings
+                },
+              ),
+            ],
             customAppbarRow: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,13 +127,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   iconData: Icons.menu,
                   constraints: constraints,
                   onPressed: () {
-                    //TODO: Implement home menu (temp: sign out currentUser)
-                    FirebaseTasks.signOut();
-                    Provider.of<CurrentUser>(context, listen: false)
-                        .client = null;
-                    print(
-                        'Current user: ${Provider.of<CurrentUser>(context, listen: false).client}');
-                    Navigator.pushNamed(context, WelcomeScreen.id);
+                    setState(() {
+                      (panelController.isPanelClosed) ? panelController.open() : panelController.close();
+                    });
                   },
                 ),
                 SizedBox(

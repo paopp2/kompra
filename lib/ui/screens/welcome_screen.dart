@@ -28,6 +28,7 @@ class WelcomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   RoundedButton(
+                    elevation: 0,
                     child: kSignUpText,
                     onPressed: () {
                       Navigator.pushNamed(context, SignUpScreen.id);
@@ -35,6 +36,7 @@ class WelcomeScreen extends StatelessWidget {
                     colour: kAccentColor,
                   ),
                   RoundedButton(
+                    elevation: 0,
                     child: kLoginText,
                     onPressed: () {
                       Navigator.pushNamed(context, LoginScreen.id);

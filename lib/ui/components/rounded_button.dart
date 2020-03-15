@@ -8,6 +8,7 @@ class RoundedButton extends StatelessWidget {
     @required this.child,
     this.border = kDefaultRoundButtonBorder,
     this.isDisabled = false,
+    this.elevation,
   });
 
   final Color colour;
@@ -15,6 +16,7 @@ class RoundedButton extends StatelessWidget {
   final Widget child;
   final Border border;
   final bool isDisabled;
+  final double elevation;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,8 @@ class RoundedButton extends StatelessWidget {
           horizontal: 50,
         ),
         child: Material(
-          elevation: (isDisabled) ? 0 : 4,
+          elevation: (elevation != null) ? elevation :
+            (isDisabled) ? 0 : 4,
           color: (isDisabled) ? Colors.grey : colour,
           borderRadius: BorderRadius.circular(30.0),
           child: Container(
