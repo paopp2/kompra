@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kompra/constants.dart';
 import 'package:kompra/domain/firebase_tasks.dart';
-import 'package:kompra/domain/models/grocery_cart.dart';
 import 'package:kompra/domain/models/transaction.dart';
 import 'package:kompra/ui/components/back_icon_button.dart';
 import 'package:kompra/ui/components/custom_icon_button.dart';

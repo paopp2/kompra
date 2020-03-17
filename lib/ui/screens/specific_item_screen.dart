@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:kompra/constants.dart';
-import 'package:kompra/domain/models/grocery_cart.dart';
 import 'package:kompra/ui/components/custom_icon_button.dart';
 import 'package:kompra/ui/components/floating_action_buttons.dart';
 import 'package:kompra/ui/components/rounded_button.dart';

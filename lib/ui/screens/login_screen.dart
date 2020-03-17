@@ -77,7 +77,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) {
                       if (value.isEmpty ) {
                         return 'Email required';
-                      } else if (_loginError == 'ERROR_USER_NOT_FOUND' || _loginError == 'ERROR_INVALID_EMAIL') {
+                      } else if (_loginError == 'ERROR_USER_NOT_FOUND'
+                          || _loginError == 'ERROR_INVALID_EMAIL'
+                          || _loginError == 'NO_CLIENT_ACCOUNT_FOR_THIS_EMAIL') {
                         return 'Invalid email';
                       }
                       return null;
@@ -136,8 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   } on PlatformException catch (error) {
                     print('Log in error: ${error.code}');
+                    setState(() {isLoading = false;});
                     _formKey.currentState.setState(() {
-                      isLoading = false;
                       _loginError = error.code;
                       _formKey.currentState.validate();
                     });
@@ -148,6 +150,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     await FirebaseTasks.getClient(email: email).then((client) {
                       Provider.of<CurrentUser>(context, listen: false).client = client;
                       print('Current user: ${Provider.of<CurrentUser>(context, listen: false).client.clientEmail}');
+                    });
+                  } else {
+                    setState(() {isLoading = false;});
+                    _formKey.currentState.setState(() {
+                      _loginError = 'NO_CLIENT_ACCOUNT_FOR_THIS_EMAIL';
+                      _formKey.currentState.validate();
                     });
                   }
                 }

@@ -218,11 +218,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   );
                 } on PlatformException catch (error) {
                   print('Sign up error: ${error.code}');
-                  _formKey.currentState.setState(() {
-                    isLoading = true;
-                    _signupError = error.code;
-                    _formKey.currentState.validate();
-                  });
+                  setState(() {isLoading = false;});
+                  if(error.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+                    result = await FirebaseTasks.createClientAccountForExistingShopper(
+                        email: email,
+                        password: password,
+                        name: ('$firstName $lastName'),
+                        phoneNum: phoneNum
+                    );
+                  } else {
+                    _formKey.currentState.setState(() {
+                      _signupError = error.code;
+                      _formKey.currentState.validate();
+                    });
+                  }
                 }
                 if(result != null) {
                   setState(() {isLoading = true;});

@@ -9,7 +9,6 @@ import 'package:kompra/domain/models/transaction.dart' as my;
 
 class FirebaseTasks {
 
-  //TODO fix return
   static Future<AuthResult> createNewUserWithEmailAndPass(
       {
         @required String name,
@@ -18,40 +17,71 @@ class FirebaseTasks {
         @required String password,
       }) async {
     final newUser = await fireAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    if (newUser != null) {
+        email: email,
+        password: password,
+    ).then((result) {
       clientsCollection.document(email).setData({
         'clientName' : name,
         'clientPhoneNum' : phoneNum,
         'clientEmail' : email,
       });
       print('Sign up success');
-      return newUser;
-    }
+      return result;
+    });
+    return newUser;
   }
 
-  static Future<AuthResult> logInUserWithEmailAndPass (
-      {String email, String password}) {
-    final existingUser = fireAuth.signInWithEmailAndPassword(
+  static Future<AuthResult> createClientAccountForExistingShopper(
+    {
+      @required String email,
+      @required String password,
+      @required String name,
+      @required String phoneNum
+    }) {
+      final existingShopperButNoClientAccYet = fireAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
-    );
-    if(existingUser != null) {
-      print('Log in successful');
-      return existingUser;
-    }
+      ).then((result) {
+        clientsCollection.document(email).setData({
+          'clientName' : name,
+          'clientPhoneNum' : phoneNum,
+          'clientEmail' : email,
+        });
+        print('Client account created for shopper');
+        return result;
+      });
+      return existingShopperButNoClientAccYet;
+  }
+
+  static Future<AuthResult> logInUserWithEmailAndPass(
+    {String email, String password}) async {
+      final existingUser = fireAuth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+      );
+      final Client thisClient = await getClient(
+        email: email,
+      );
+      if(existingUser != null && thisClient != null) {
+        print('Log in successful');
+        return existingUser;
+      }
+      return null;
   }
 
   static Future<Client> getClient({String email}) async {
     DocumentSnapshot snapshot = await clientsCollection.document(email).get();
-    String em = snapshot.data['clientEmail'];
-    String name = snapshot.data['clientName'];
-    String phoneNum = snapshot.data['clientPhoneNum'];
-    return Client(
-      clientEmail: em,
-      clientName: name,
-      clientPhoneNum: phoneNum,
-    );
+    if(snapshot.data != null) {
+      String em = snapshot.data['clientEmail'];
+      String name = snapshot.data['clientName'];
+      String phoneNum = snapshot.data['clientPhoneNum'];
+      return Client(
+        clientEmail: em,
+        clientName: name,
+        clientPhoneNum: phoneNum,
+      );
+    }
+    return null;
   }
 
   static Future<FirebaseUser> getCurrentUser() {

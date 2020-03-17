@@ -230,7 +230,7 @@ class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
                                     ),
                                     Container(
                                       height: constraints.maxHeight * 1 / 3.2,
-                                      child: ListView(
+                                      child: (_groceryList != null) ? ListView(
                                         children: <Widget>[
                                           OrderSummaryTable(
                                             itemList:
@@ -240,6 +240,8 @@ class _CheckoutReceiptScreenState extends State<CheckoutReceiptScreen> {
                                                     .itemList,
                                           ),
                                         ],
+                                      ) : Center(
+                                        child: Text('No items in cart'),
                                       ),
                                     ),
                                     Row(
